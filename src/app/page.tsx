@@ -1,59 +1,22 @@
-import { useState } from "react";
-import { getCurrency } from "./api/apiService";
-import { Currency } from "./types";
+// import { LoginForm } from './form';
+import Link from "next/link";
 
-export default async function Home() {
-  const [columnCount, setColumnCount] = useState(5);
-
-  const incrementColumn = () => {
-    setColumnCount((prev) => Math.min(prev + 1, currencies.length));
-  };
-
-  const decrementColumn = () => {
-    setColumnCount((prev) => Math.max(prev - 1, 1));
-  };
-
-  try {
-    const currencies: Currency[] = await getCurrency();
-
-    return (
-      <main>
-        <div className="mb-4">
-          <button
-            onClick={incrementColumn}
-            className="px-4 py-2 bg-blue-500 text-white rounded mr-2 hover:bg-blue-600"
-          >
-            Add Column
-          </button>
-          <button
-            onClick={decrementColumn}
-            className="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600"
-          >
-            Remove Column
-          </button>
-        </div>
-        <table>
-          <thead>
-            <tr>
-              <th scope="col">Name</th>
-              <th scope="col">Balance</th>
-            </tr>
-          </thead>
-          <tbody>
-            {currencies.slice(0, columnCount).map((currency, index) => {
-              return (
-                <tr key={index}>
-                  <td>{currency.currencyId}</td>
-                  <td>{currency.amount}</td>
-                </tr>
-              );
-            })}
-          </tbody>
-        </table>
-      </main>
-    );
-  } catch (error) {
-    console.error("Failed to fetch currencies:", error);
-    return <div>Error loading currencies</div>;
-  }
+export default function Page() {
+  return (
+    <div className="flex flex-col p-4 lg:w-1/3">
+      <div className="text-center">
+        <h1 className="text-3xl font-bold">Login</h1>
+        <p className="text-gray-500">
+          Enter your email below to login to your account
+        </p>
+      </div>
+      <div className="mt-6">{/* <LoginForm /> */}</div>
+      <div className="mt-4 text-center text-sm">
+        Don&apos;t have an account?{" "}
+        <Link className="underline" href="/signup">
+          Sign up
+        </Link>
+      </div>
+    </div>
+  );
 }

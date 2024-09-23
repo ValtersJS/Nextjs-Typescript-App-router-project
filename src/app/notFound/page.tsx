@@ -1,9 +1,13 @@
-import { getCurrency, getNotFound } from "../api/apiService";
+import { getNotFound } from "../api/apiService";
+import ErrorMessage from "../components/ErrorMessage";
+import { getSession } from "../lib/session";
 import { Currency } from "../types";
 
 export default async function Home() {
+  await getSession();
+
   try {
-    const currencies: Currency[] = await getCurrencyy();
+    const { currencies, error } = await getNotFound();
 
     return (
       <main>
@@ -29,6 +33,26 @@ export default async function Home() {
     );
   } catch (error) {
     console.error("Failed to fetch currencies:", error);
-    return <div>Error loading currencies</div>;
+
+    if (error instanceof Response) {
+      if (error.status === 404) {
+        console.log("404");
+        return <ErrorMessage message="The currency API route was not found." />;
+      } else if (error.status === 500) {
+        return (
+          <ErrorMessage message="There was a server error. Please try again later." />
+        );
+      }
+    } else if (error instanceof Error) {
+      if (error.message.includes("Failed to fetch")) {
+        return (
+          <ErrorMessage message="Unable to connect to the currency API." />
+        );
+      }
+    }
+
+    return (
+      <ErrorMessage message="An unexpected error occurred while fetching currency data." />
+    );
   }
 }

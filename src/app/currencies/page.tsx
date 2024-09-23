@@ -1,24 +1,32 @@
 import { Suspense } from "react";
-import { getCurrency } from "../api/apiService";
-import { Currency } from "../types";
+import { getCurrencies } from "../api/apiService";
+// import { Currency } from "../types";
 import CurrencyTable from "../components/CurrencyTable";
 import ErrorMessage from "../components/ErrorMessage";
 import TableControls from "../components/TableControls";
+import { getSession } from "../lib/session";
 
 export default async function Home({
   searchParams,
 }: {
   searchParams: { [key: string]: string | string[] | undefined };
 }) {
+  await getSession();
+
   const columns =
     typeof searchParams.columns === "string"
       ? parseInt(searchParams.columns, 10)
       : 5; // default is 5
 
   try {
-    const currencies: Currency[] = await getCurrency();
+    const { data: currencies, error } = await getCurrencies();
 
-    if (currencies.length === 0) {
+    if (error) {
+      console.error("Failed to fetch currencies:", error);
+      return <ErrorMessage message={error} />;
+    }
+
+    if (currencies!.length === 0) {
       return <ErrorMessage message="No currency data available." />;
     }
 
@@ -26,12 +34,12 @@ export default async function Home({
       <main>
         <Suspense fallback={<div>Loading table controls...</div>}>
           <TableControls
-            totalColumns={currencies.length}
+            totalColumns={currencies!.length}
             initialColumns={columns}
           />
         </Suspense>
         <Suspense fallback={<div>Loading currency table...</div>}>
-          <CurrencyTable currencies={currencies} columns={columns} />
+          <CurrencyTable currencies={currencies!} columns={columns} />
         </Suspense>
       </main>
     );
