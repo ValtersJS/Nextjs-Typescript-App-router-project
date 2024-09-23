@@ -1,4 +1,3 @@
-// src/app/components/TableControls.tsx
 "use client";
 
 import { useState, useEffect } from "react";

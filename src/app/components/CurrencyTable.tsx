@@ -1,6 +1,8 @@
 import React from "react";
 import { Currency } from "../types";
 import { getCurrencyAbbreviation } from "../utils/currencyAbbreviations";
+import { header } from "./CurrencyTable/header";
+import { Tbody } from "./CurrencyTable/tbody";
 
 interface CurrencyTableProps {
   currencies: Currency[];
@@ -27,49 +29,14 @@ export default function CurrencyTable({
         <thead className="bg-gray-100">
           <tr>
             {/* repeat labels three times */}
-            {Array(3)
-              .fill(headerLabels)
-              .flat()
-              .map((label, index) => (
-                <th
-                  key={index}
-                  scope="col"
-                  className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-                >
-                  {label}
-                </th>
-              ))}
+            {header(headerLabels)}
           </tr>
         </thead>
         <tbody className="bg-white divide-y divide-gray-200">
-          {rows.map((row, rowIndex) => (
-            <tr
-              key={rowIndex}
-              className={rowIndex % 2 === 0 ? "bg-white" : "bg-gray-50"}
-            >
-              {row.map((currency, index) => (
-                <React.Fragment key={index}>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                    {getCurrencyAbbreviation(currency.currencyId)}
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                    {currency.amount}
-                  </td>
-                </React.Fragment>
-              ))}
-
-              {/* Fill in empty cells */}
-              {row.length < 3 &&
-                Array(3 - row.length)
-                  .fill(null)
-                  .map((_, emptyIndex) => (
-                    <React.Fragment key={emptyIndex}>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500"></td>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500"></td>
-                    </React.Fragment>
-                  ))}
-            </tr>
-          ))}
+          <Tbody
+            getCurrencyAbbreviation={getCurrencyAbbreviation}
+            rows={rows}
+          />
         </tbody>
       </table>
     </div>

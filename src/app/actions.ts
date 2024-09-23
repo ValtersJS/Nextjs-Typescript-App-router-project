@@ -18,50 +18,12 @@ export async function signup(state: FormState, formData: FormData): Promise<Form
     }
 }
 
-export async function login(state: FormState, formData: FormData): Promise<FormState> {
-
-    const result = LoginSchema.safeParse({
-        email: formData.get('email'),
-        password: formData.get('password'),
-    });
-
-    if (!result.success) {
-        return {
-            errors: result.error.flatten().fieldErrors,
-        }
-    }
-
-    return {
-        success: true,
-        otpRequired: true,
-    };
-
-
-}
-
-export async function OTP(state: FormState, formData: FormData): Promise<FormState> {
-
-    const result = OTPSchema.safeParse({
-        otp: formData.get('otp'),
-    });
-
-    if (!result.success) {
-        return {
-            errors: result.error.flatten().fieldErrors,
-        }
-    }
-
-    const id = formData.get('email')?.toString();
-    await createSession(id);
-
-    redirect('/currencies');
-}
-
+// OTP and login in same server action, can pass login form email to otp for session creation
 export async function authenticate(state: FormState, formData: FormData): Promise<FormState> {
     const email = formData.get('email')?.toString();
     const password = formData.get('password')?.toString();
     const otp = formData.get('otp')?.toString();
-    // const delay = (millis) => new Promise(resolve => setTimeout(resolve, millis));
+
 
     if (otp) {
         const result = OTPSchema.safeParse({ otp });
@@ -72,8 +34,7 @@ export async function authenticate(state: FormState, formData: FormData): Promis
             }
         }
 
-        createSession(email!);
-        // await delay(5000);
+        createSession(email!); // email is validated by schema, cant be null here
 
         redirect('/currencies');
     } else {
