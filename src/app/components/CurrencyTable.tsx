@@ -1,7 +1,7 @@
 import React from "react";
 import { Currency } from "../types";
 import { getCurrencyAbbreviation } from "../utils/currencyAbbreviations";
-import { header } from "./CurrencyTable/header";
+import { HeaderLogic } from "./CurrencyTable/header";
 import { Tbody } from "./CurrencyTable/tbody";
 
 interface CurrencyTableProps {
@@ -16,6 +16,7 @@ export default function CurrencyTable({
   // selected column count
   const displayedCurrencies = currencies.slice(0, columns);
 
+  // prepare rows of three
   const rows = [];
   for (let i = 0; i < displayedCurrencies.length; i += 3) {
     rows.push(displayedCurrencies.slice(i, i + 3));
@@ -29,7 +30,7 @@ export default function CurrencyTable({
         <thead className="bg-gray-100">
           <tr>
             {/* repeat labels three times */}
-            {header(headerLabels)}
+            <HeaderLogic labels={headerLabels} />
           </tr>
         </thead>
         <tbody className="bg-white divide-y divide-gray-200">

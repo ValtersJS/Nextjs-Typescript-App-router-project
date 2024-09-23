@@ -2,9 +2,11 @@
 
 import { signup } from "../actions";
 import { useFormState, useFormStatus } from "react-dom";
+import { AuthButton } from "../components/AuthButton";
 
 export function SignupForm() {
   const [state, action] = useFormState(signup, undefined);
+  const { pending } = useFormStatus();
 
   return (
     <form action={action} className="space-y-4">
@@ -46,21 +48,7 @@ export function SignupForm() {
           </div>
         )}
       </div>
-      <SubmitButton />
+      <AuthButton text="Sign up" pending={pending} />
     </form>
-  );
-}
-
-function SubmitButton() {
-  const { pending } = useFormStatus();
-
-  return (
-    <button
-      disabled={pending}
-      type="submit"
-      className="w-full bg-blue-600 text-white font-semibold py-2 rounded-md hover:bg-blue-700 disabled:opacity-50"
-    >
-      {pending ? "Loading..." : "Log in"}
-    </button>
   );
 }

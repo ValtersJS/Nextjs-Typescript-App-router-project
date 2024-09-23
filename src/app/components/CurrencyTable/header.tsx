@@ -1,8 +1,12 @@
-export function header(headerLabels: Array<string>) {
+interface headerLogicProps {
+  labels: Array<string>;
+}
+
+export function HeaderLogic({ labels }: headerLogicProps) {
   return (
     <>
       {Array(3)
-        .fill(headerLabels)
+        .fill(labels)
         .flat()
         .map((label, index) => (
           <th

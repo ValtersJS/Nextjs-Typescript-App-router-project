@@ -22,8 +22,11 @@ export default async function Currencies({
       {/* Pass getCurrencies or getNotFound fetch functions */}
       <Suspense
         fallback={
-          <div>
-            Loading... <Spinner />
+          <div className="flex flex-col items-center justify-center h-screen">
+            <div className="text-lg font-medium text-gray-600 mb-4">
+              Loading...
+            </div>
+            <Spinner />
           </div>
         }
       >

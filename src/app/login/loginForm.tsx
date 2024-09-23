@@ -3,10 +3,11 @@
 import { useEffect } from "react";
 import { authenticate } from "../actions";
 import { useFormState, useFormStatus } from "react-dom";
+import { AuthButton } from "../components/AuthButton";
 
 export function LoginForm({ onLoginSuccess }) {
   const [state, action] = useFormState(authenticate, undefined);
-  console.log("login form");
+  const { pending } = useFormStatus();
 
   useEffect(() => {
     if (state?.success && typeof onLoginSuccess === "function") {
@@ -55,21 +56,7 @@ export function LoginForm({ onLoginSuccess }) {
           </div>
         )}
       </div>
-      <SubmitButton />
+      <AuthButton text="Log in" pending={pending} />
     </form>
-  );
-}
-
-function SubmitButton() {
-  const { pending } = useFormStatus();
-
-  return (
-    <button
-      disabled={pending}
-      type="submit"
-      className="w-full bg-blue-600 text-white font-semibold py-2 rounded-md hover:bg-blue-700 disabled:opacity-50"
-    >
-      {pending ? "Loading..." : "Log in"}
-    </button>
   );
 }

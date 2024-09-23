@@ -9,11 +9,13 @@ interface tbodyProps {
 export function Tbody({ getCurrencyAbbreviation, rows }: tbodyProps) {
   return (
     <>
+      {/* render rows of currencies */}
       {rows.map((row, rowIndex) => (
         <tr
           key={rowIndex}
           className={rowIndex % 2 === 0 ? "bg-white" : "bg-gray-50"}
         >
+          {/* render row with three entries */}
           {row.map((currency, index) => (
             <React.Fragment key={index}>
               <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
@@ -25,7 +27,7 @@ export function Tbody({ getCurrencyAbbreviation, rows }: tbodyProps) {
             </React.Fragment>
           ))}
 
-          {/* Fill in empty cells */}
+          {/* Fill in empty cells to keep consitent look */}
           {row.length < 3 &&
             Array(3 - row.length)
               .fill(null)

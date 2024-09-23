@@ -23,8 +23,8 @@ export function getSession() {
 
     try {
         const session = JSON.parse(sessionCookie.value);
-        if (new Date(session.expiresAt) < new Date()) {
-            redirect('/login');
+        if (new Date(session.expiresAt) < new Date()) { // check if cookie has expired again
+            clearSession();
         }
         return session;
     } catch (error) {
@@ -33,6 +33,7 @@ export function getSession() {
     }
 }
 
-export function clearSession() {
+export async function clearSession() {
     cookies().delete('session');
+    redirect('/login');
 }

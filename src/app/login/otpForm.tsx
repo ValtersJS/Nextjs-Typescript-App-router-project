@@ -4,9 +4,12 @@ import { authenticate } from "../actions";
 import { useFormState, useFormStatus } from "react-dom";
 import Spinner from "../utils/spinner";
 import { useState } from "react";
+import { AuthButton } from "../components/AuthButton";
 
 export function OTPForm() {
   const [state, action] = useFormState(authenticate, undefined);
+
+  const { pending } = useFormStatus();
 
   const [loading, setLoading] = useState(false);
 
@@ -22,7 +25,6 @@ export function OTPForm() {
     }, 4000);
   };
 
-  console.log(JSON.stringify(state));
   return (
     <div>
       {!loading ? (
@@ -43,7 +45,7 @@ export function OTPForm() {
           {state?.errors?.otp && (
             <p className="text-red-500 text-sm">{state.errors.otp}</p>
           )}
-          <SubmitButton loading={loading} />
+          <AuthButton text="Log in" pending={pending} />
         </form>
       ) : (
         <div className="flex items-center justify-center w-full h-full">
@@ -51,19 +53,5 @@ export function OTPForm() {
         </div>
       )}
     </div>
-  );
-}
-
-function SubmitButton({ loading }: { loading: boolean }) {
-  const { pending } = useFormStatus();
-
-  return (
-    <button
-      disabled={pending || loading}
-      type="submit"
-      className="w-full bg-blue-600 text-white font-semibold py-2 rounded-md hover:bg-blue-700 disabled:opacity-50"
-    >
-      {loading ? "Loading..." : "Log in"}
-    </button>
   );
 }

@@ -3,6 +3,7 @@ import CurrencyTable from "./CurrencyTable";
 import ErrorMessage from "./ErrorMessage";
 import TableControls from "./TableControls";
 import { Currency } from "../types";
+import { LogOut } from "./LogOut";
 
 interface CurrencyFetcherProps {
   fetchCurrencies: () => Promise<{
@@ -30,6 +31,7 @@ const CurrencyFetcher: React.FC<CurrencyFetcherProps> = async ({
   return (
     <>
       <Suspense fallback={<div>Loading table controls...</div>}>
+        <LogOut />
         <TableControls
           totalColumns={currencies!.length}
           initialColumns={columns}
