@@ -1,5 +1,3 @@
-**BtcBit test task completed by Valters Sakarnis**
-
 ## Getting Started
 
 ### Technologies
